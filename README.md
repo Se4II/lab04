@@ -11,23 +11,27 @@
 ### 2. Подготовка проекта
 
 Был скопирован проект из лабораторной работы №3:
-```
-~/qNetayS/lab04/
-├── formatter_lib/ # статическая библиотека formatter
-├── formatter_ex/ # статическая библиотека formatter_ex
-├── solver_lib/ # статическая библиотека solver_lib
-├── hello_world/ # приложение
-├── solver/ # приложение
-├── CMakeLists.txt # корневой
+
+### Конфигурация Travis CI
+
+```yaml
+language: cpp
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+    - os: linux
+      compiler: clang
+script:
+  - cmake -H. -B_build
+  - cmake --build _build
 ```
 
 ### 2.1. Настройка GitHub Actions (Linux)
 
-Создан файл `.github/workflows/linux.yml`:
+
 
 ```yaml
-name: Linux CI (gcc & clang)
-
 on:
   push:
     branches: [ main, master ]
@@ -60,16 +64,12 @@ jobs:
 Cоздан файл .appveyoer.yml
 
 ```yaml
-image: Visual Studio 2022
-
-environment:
-  matrix:
-    - GENERATOR: "Visual Studio 17 2022"
-      PLATFORM: x64
-      CONFIGURATION: Debug
-    - GENERATOR: "Visual Studio 17 2022"
-      PLATFORM: x64
-      CONFIGURATION: Release
+image: Visual Studio 2019
+platform: x64
+configuration: Release
+build_script:
+  - cmake -H. -B_build
+  - cmake --build _build --config Release
 
 build_script:
   - mkdir build
