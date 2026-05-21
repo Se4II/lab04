@@ -1,0 +1,17 @@
+version: 1.0.{build}
+image: Visual Studio 2019
+platform: x64
+configuration: Release
+
+install:
+  - cmd: cmake --version
+
+build_script:
+  - cmd: cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
+  - cmd: cmake --build _build --config Release
+
+test_script:
+  - cmd: _build\hello_world\Release\hello_world.exe
+
+artifacts:
+  - path: _install\**\*
